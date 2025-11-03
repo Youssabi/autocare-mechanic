@@ -21,4 +21,4 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: autocare-mechanic
           directory: .
-          productionBranch: main
+          branch: main
