@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Booking - Admin Portal</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .create-booking-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .create-booking-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f97316;
+            padding-bottom: 1rem;
+        }
+
+        .create-booking-header h1 {
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+        }
+
+        .create-booking-header p {
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #f97316;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .notification-preferences {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .checkbox-group {
+            margin: 1rem 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkbox-item:hover {
+            background: #f1f5f9;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .carrier-select {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .carrier-select.show {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .success-message.show {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .create-booking-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Check -->
+    <script>
+        if (sessionStorage.getItem('adminAuthenticated') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-car-side"></i>
+                    <span>AutoCare Admin</span>
+                </div>
+                <nav class="nav">
+                    <a href="../index.html"><i class="fas fa-home"></i> Customer Site</a>
+                    <a href="dashboard.html"><i class="fas fa-calendar-alt"></i> Dashboard</a>
+                    <a href="create-booking.html" class="active"><i class="fas fa-plus-circle"></i> Create Booking</a>
+                    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard">
+        <div class="container">
+            <div class="create-booking-container">
+                <div class="create-booking-header">
+                    <h1><i class="fas fa-calendar-plus"></i> Create New Booking</h1>
+                    <p>Create an appointment on behalf of a customer</p>
+                </div>
+
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <span>✅ Booking created successfully! Customer has received booking confirmation.</span>
+                </div>
+
+                <form id="createBookingForm">
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-user"></i> Customer Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="customerName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="customerName" name="customerName" required placeholder="John Smith">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerEmail">Email Address <span class="required">*</span></label>
+                            <input type="email" id="customerEmail" name="customerEmail" required placeholder="john@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerPhone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="customerPhone" name="customerPhone" required placeholder="+61 412 345 678">
+                        </div>
+                    </div>
+
+                    <!-- Notification Preferences -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-bell"></i> Notification Preferences</h3>
+                        
+                        <div class="notification-preferences">
+                            <p style="margin-bottom: 1rem; color: #64748b;">How should the customer receive their confirmation?</p>
+                            
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="sendEmail" name="sendEmail" checked>
+                                    <label for="sendEmail">
+                                        <strong>📧 Email Confirmation</strong>
+                                        <div style="font-size: 0.85rem; color: #64748b;">Send confirmation to customer's email</div>
+                                    </label>
+                                </div>
+
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="sendSMS" name="sendSMS" onchange="toggleCarrierSelect()">
+                                    <label for="sendSMS">
+                                        <strong>💬 SMS Text Confirmation</strong>
+                                        <div style="font-size: 0.85rem; color: #64748b;">Send text message to customer's phone</div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Carrier selection no longer needed with Twilio -->
+                            <div class="carrier-select" id="carrierSelectDiv" style="display: none;">
+                                <label for="customerCarrier">Mobile Carrier (for SMS)</label>
+                                <select id="customerCarrier" name="customerCarrier">
+                                    <option value="">Not needed with Twilio</option>
+                                </select>
+                            </div>
+                            
+                            <p style="font-size: 0.85rem; color: #10b981; margin-top: 0.5rem; padding: 0.75rem; background: #f0fdf4; border-radius: 4px; border-left: 3px solid #10b981;">
+                                <i class="fas fa-check-circle"></i> <strong>SMS via Twilio</strong> - Professional SMS delivery with 99.95% success rate. No carrier selection needed!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Details -->
+                    <div class="form-section">
+                        <h3><i class="fas fa-wrench"></i> Service Details</h3>
+                        
+                        <div class="form-group">
+                            <label for="serviceType">Service Type <span class="required">*</span></label>
+                            <select id="serviceType" name="serviceType" required>
+                                <option value="">Select service...</option>
+                                <option value="Oil Change">Oil Change ($80-$150)</option>
+                                <option value="Brake Service">Brake Service ($300-$800)</option>
+                                <option value="Battery Replacement">Battery Replacement ($200-$400)</option>
+                                <option value="Engine Diagnostics">Engine Diagnostics ($100-$200)</option>
+                                <option value="Tyre Service">Tyre Service ($100-$600)</option>
+                                <option value="Transmission Service">Transmission Service ($200-$1000)</option>
+                                <option value="AC Service">AC Service ($150-$400)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehicleInfo">Vehicle Information <span class="required">*</span></label>
+                            <input type="text" id="vehicleInfo" name="vehicleInfo" required placeholder="2020 Toyota Camry">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="preferredDate">Appointment Date <span class="required">*</span></label>
+                            <input type="date" id="preferredDate" name="preferredDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="preferredTime">Appointment Time <span class="required">*</span></label>
+                            <select id="preferredTime" name="preferredTime" required>
+                                <option value="">Select time...</option>
+                                <option value="8:00 AM">8:00 AM</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalNotes">Additional Notes</label>
+                            <textarea id="additionalNotes" name="additionalNotes" placeholder="Any special requests or concerns..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Create Booking
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <script src="../js/car-database.js"></script>
+    <script src="../js/twilio-config.js"></script>
+    <script>
+        // Initialize EmailJS
+        emailjs.init('r4S3UEdppOsDSAhGm');
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('adminAuthenticated');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Toggle carrier select visibility
+        function toggleCarrierSelect() {
+            const smsCheckbox = document.getElementById('sendSMS');
+            const carrierDiv = document.getElementById('carrierSelectDiv');
+            
+            if (smsCheckbox.checked) {
+                carrierDiv.classList.add('show');
+            } else {
+                carrierDiv.classList.remove('show');
+            }
+        }
+
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('preferredDate');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+        });
+
+        // Handle form submission
+        document.getElementById('createBookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+            
+            try {
+                // Gather form data
+                const formData = {
+                    customer_name: document.getElementById('customerName').value,
+                    customer_email: document.getElementById('customerEmail').value,
+                    customer_phone: document.getElementById('customerPhone').value,
+                    service_type: document.getElementById('serviceType').value,
+                    vehicle_info: document.getElementById('vehicleInfo').value,
+                    preferred_date: document.getElementById('preferredDate').value,
+                    preferred_time: document.getElementById('preferredTime').value,
+                    additional_notes: document.getElementById('additionalNotes').value || 'None',
+                    status: 'confirmed', // Admin bookings are pre-confirmed
+                    booking_date: new Date().toISOString(),
+                    send_email: document.getElementById('sendEmail').checked,
+                    send_sms: document.getElementById('sendSMS').checked,
+                    customer_carrier: document.getElementById('customerCarrier').value
+                };
+                
+                // Create booking in database
+                const response = await fetch('/tables/appointments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to create booking');
+                }
+                
+                const result = await response.json();
+                console.log('Booking created:', result);
+                
+                // Send notifications based on preferences
+                if (formData.send_email) {
+                    await sendEmailConfirmation(formData);
+                }
+                
+                if (formData.send_sms) {
+                    await sendSMSConfirmation(formData);
+                }
+                
+                // Show success message
+                document.getElementById('successMessage').classList.add('show');
+                
+                // Show browser alert for confirmation
+                let notificationMsg = '✅ Booking created successfully!\n\n';
+                notificationMsg += `Customer: ${formData.customer_name}\n`;
+                notificationMsg += `Phone: ${formData.customer_phone}\n`;
+                notificationMsg += `Date: ${formData.preferred_date} at ${formData.preferred_time}\n\n`;
+                
+                if (formData.send_email && formData.send_sms) {
+                    notificationMsg += '📧 Email confirmation sent\n💬 SMS confirmation sent';
+                } else if (formData.send_email) {
+                    notificationMsg += '📧 Email confirmation sent to customer';
+                } else if (formData.send_sms) {
+                    notificationMsg += '💬 SMS confirmation sent to customer';
+                } else {
+                    notificationMsg += 'ℹ️ No notifications sent (as per your selection)';
+                }
+                
+                alert(notificationMsg);
+                
+                // Reset form
+                e.target.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.remove('show');
+                }, 5000);
+                
+                // Redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error creating booking:', error);
+                alert('Failed to create booking. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-check"></i> Create Booking';
+            }
+        });
+
+        // Send email confirmation
+        async function sendEmailConfirmation(bookingData) {
+            try {
+                const templateParams = {
+                    to_email: bookingData.customer_email,
+                    customer_name: bookingData.customer_name,
+                    customer_email: bookingData.customer_email,
+                    customer_phone: bookingData.customer_phone,
+                    service_type: bookingData.service_type,
+                    vehicle_info: bookingData.vehicle_info,
+                    preferred_date: bookingData.preferred_date,
+                    preferred_time: bookingData.preferred_time,
+                    additional_notes: bookingData.additional_notes
+                };
+                
+                // Use the confirmed template since admin bookings are pre-confirmed
+                await emailjs.send(
+                    'service_4hka7wq',
+                    'template_ug1md6x',
+                    templateParams
+                );
+                
+                console.log('✅ Email confirmation sent');
+            } catch (error) {
+                console.error('❌ Email error:', error);
+            }
+        }
+
+        // Send SMS confirmation via Twilio
+        async function sendSMSConfirmation(bookingData) {
+            try {
+                // Check if Twilio is configured
+                if (typeof sendTwilioSMS === 'undefined') {
+                    console.warn('⚠️ Twilio not configured, SMS not sent');
+                    return;
+                }
+                
+                // Prepare booking data for Twilio function
+                const smsData = {
+                    customer_name: bookingData.customer_name,
+                    customer_phone: bookingData.customer_phone,
+                    service_type: bookingData.service_type,
+                    preferred_date: bookingData.preferred_date,
+                    preferred_time: bookingData.preferred_time
+                };
+                
+                // Send via Twilio (admin bookings are pre-confirmed)
+                const success = await sendCustomerBookingSMS(smsData, 'confirmed');
+                
+                if (success) {
+                    console.log('✅ SMS sent via Twilio to:', bookingData.customer_phone);
+                } else {
+                    console.warn('⚠️ SMS delivery may have failed');
+                }
+            } catch (error) {
+                console.error('❌ SMS error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

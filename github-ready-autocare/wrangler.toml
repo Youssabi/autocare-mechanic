@@ -1,0 +1,38 @@
+name = "autocare-mechanic"
+type = "javascript"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Build configuration
+[build]
+command = "npm run build"
+cwd = "./"
+watch_paths = ["src/**/*.js"]
+
+# Build watch paths - rebuild when these change
+[build.upload]
+format = "modules"
+main = "./src/index.js"
+
+# Routes for proper handling
+[[routes]]
+pattern = "/*"
+zone_name = "example.com"
+
+# Triggers to deploy on changes
+[triggers]
+crons = [""]
+
+# Environment variables
+[env.production]
+name = "autocare-mechanic-prod"
+routes = [
+  { pattern = "autocare.com/*", zone_name = "autocare.com" },
+  { pattern = "*.autocare.com/*", zone_name = "autocare.com" }
+]
+
+[env.staging]
+name = "autocare-mechanic-staging"
+routes = [
+  { pattern = "staging.autocare.com/*", zone_name = "autocare.com" }
+]
