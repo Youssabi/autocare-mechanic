@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoCare Mechanic - Your Trusted Auto Service</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-car-side"></i>
+                    <span>AutoCare Mechanic</span>
+                </div>
+                <nav class="nav">
+                    <a href="#services">Services</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your Trusted Auto Service Partner</h1>
+                <p>Expert repairs, reliable service, and honest pricing. Chat with our virtual assistant for instant help!</p>
+                <button class="cta-button" onclick="openChatbot()">
+                    <i class="fas fa-comments"></i> Chat with Us Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-oil-can"></i>
+                    <h3>Oil Change</h3>
+                    <p>Regular maintenance to keep your engine running smoothly</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-car-crash"></i>
+                    <h3>Brake Service</h3>
+                    <p>Complete brake inspection and repair services</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-car-battery"></i>
+                    <h3>Battery Check</h3>
+                    <p>Battery testing and replacement services</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Engine Diagnostics</h3>
+                    <p>Advanced diagnostic equipment for all issues</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-circle"></i>
+                    <h3>Tyre Services</h3>
+                    <p>Rotation, balancing, and replacement</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Transmission</h3>
+                    <p>Transmission service and repair</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About AutoCare Mechanic</h2>
+            <p>With over 20 years of experience, we provide top-quality automotive services to keep your vehicle running at its best. Our certified mechanics use the latest diagnostic equipment and quality parts to ensure your satisfaction.</p>
+            <div class="about-stats">
+                <div class="stat">
+                    <h3>20+</h3>
+                    <p>Years Experience</p>
+                </div>
+                <div class="stat">
+                    <h3>5000+</h3>
+                    <p>Happy Customers</p>
+                </div>
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Satisfaction Rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p><a href="tel:+61412345678" style="color: inherit; text-decoration: none;">+61 412 345 678</a></p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p><a href="mailto:info@autocaremechanic.com.au" style="color: inherit; text-decoration: none;">info@autocaremechanic.com.au</a></p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p><a href="https://maps.google.com/?q=123+Main+Street+Sydney+NSW+2000" target="_blank" style="color: inherit; text-decoration: none;">123 Main Street, Sydney NSW 2000</a></p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <p>Mon-Fri: 8AM-6PM, Sat: 9AM-4PM, Sun: Closed</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot Widget -->
+    <div class="chatbot-widget" id="chatbotWidget">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i>
+                <span>AutoCare Assistant</span>
+            </div>
+            <button class="chatbot-close" onclick="closeChatbot()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <p>Hello! I'm your AutoCare virtual assistant. How can I help you today?</p>
+                    <div class="quick-replies">
+                        <button onclick="sendQuickReply('I need an oil change')">Oil Change</button>
+                        <button onclick="sendQuickReply('Book an appointment')">Book Appointment</button>
+                        <button onclick="sendQuickReply('Check engine light is on')">Check Engine Light</button>
+                        <button onclick="sendQuickReply('Get a quote')">Get Quote</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-check"></i> Book an Appointment</h2>
+                <button class="modal-close" onclick="closeBookingModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="bookingForm" onsubmit="submitBooking(event)">
+                <div class="form-group">
+                    <label for="customerName"><i class="fas fa-user"></i> Full Name *</label>
+                    <input type="text" id="customerName" name="customerName" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerEmail"><i class="fas fa-envelope"></i> Email *</label>
+                        <input type="email" id="customerEmail" name="customerEmail" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone"><i class="fas fa-phone"></i> Phone *</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required placeholder="+61 412 345 678">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="serviceType"><i class="fas fa-wrench"></i> Service Type *</label>
+                    <select id="serviceType" name="serviceType" required>
+                        <option value="">Select a service...</option>
+                        <option value="Oil Change">Oil Change ($80-$150)</option>
+                        <option value="Brake Service">Brake Service ($300-$800)</option>
+                        <option value="Battery Check">Battery Check ($200-$400)</option>
+                        <option value="Engine Diagnostics">Engine Diagnostics ($100-$200)</option>
+                        <option value="Tyre Services">Tyre Services ($100-$600)</option>
+                        <option value="Transmission">Transmission Service ($200-$1000)</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="vehicleMake"><i class="fas fa-car"></i> Vehicle Make *</label>
+                    <select id="vehicleMake" name="vehicleMake" required onchange="updateModels()">
+                        <option value="">Select make...</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="vehicleModel"><i class="fas fa-car-side"></i> Model *</label>
+                        <select id="vehicleModel" name="vehicleModel" required disabled>
+                            <option value="">Select make first...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleYear"><i class="fas fa-calendar-alt"></i> Year *</label>
+                        <select id="vehicleYear" name="vehicleYear" required>
+                            <option value="">Select year...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="preferredDate"><i class="fas fa-calendar"></i> Preferred Date *</label>
+                        <input type="date" id="preferredDate" name="preferredDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferredTime"><i class="fas fa-clock"></i> Preferred Time *</label>
+                        <select id="preferredTime" name="preferredTime" required>
+                            <option value="">Select time...</option>
+                            <option value="8:00 AM">8:00 AM</option>
+                            <option value="9:00 AM">9:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="1:00 PM">1:00 PM</option>
+                            <option value="2:00 PM">2:00 PM</option>
+                            <option value="3:00 PM">3:00 PM</option>
+                            <option value="4:00 PM">4:00 PM</option>
+                            <option value="5:00 PM">5:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalNotes"><i class="fas fa-comment"></i> Additional Notes</label>
+                    <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any specific issues or concerns..."></textarea>
+                </div>
+                
+                <!-- Notification Preferences -->
+                <div class="form-group">
+                    <label style="margin-bottom: 10px;"><i class="fas fa-bell"></i> Notification Preferences</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <label style="display: flex; align-items: center; cursor: pointer; font-weight: normal;">
+                            <input type="checkbox" id="notifyEmail" name="notifyEmail" checked style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+                            <span>📧 Email confirmation (recommended)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer; font-weight: normal;">
+                            <input type="checkbox" id="notifySMS" name="notifySMS" checked style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+                            <span>💬 SMS text message (instant confirmation)</span>
+                        </label>
+                    </div>
+                    <small style="color: #64748b; display: block; margin-top: 8px;">
+                        ✨ We recommend both for best communication!
+                    </small>
+                </div>
+                
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-check-circle"></i> Confirm Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Booking Confirmed!</h2>
+            <p>Thank you for choosing AutoCare Mechanic. We've received your appointment request.</p>
+            <p id="confirmationMessage"><strong>📧 Confirmation sent!</strong></p>
+            <p class="success-details" id="successDetails"></p>
+            <button class="submit-button" onclick="closeSuccessModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <button class="chat-toggle" id="chatToggle" onclick="toggleChatbot()">
+        <i class="fas fa-comments"></i>
+        <span class="chat-badge">1</span>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AutoCare Mechanic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/car-database.js"></script>
+    <script src="js/chatbot-enhanced.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>
